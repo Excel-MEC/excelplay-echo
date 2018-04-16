@@ -1,4 +1,6 @@
-import os, filecmp, shutil, sys, subprocess, re, shlex
-from operator import eq
-class judge :
-	pass
+import os
+import filecmp
+
+
+class judge:
+    pass
