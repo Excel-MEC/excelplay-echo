@@ -1,2 +1,2 @@
-class judge:
+class Judge:
     pass
