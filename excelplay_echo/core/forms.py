@@ -2,5 +2,5 @@ from django import forms
 
 
 class SubmitForm(forms.Form):
-    fid = forms.IntegerField()
+    file_id = forms.IntegerField()
     files_echo = forms.FileField()
