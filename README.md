@@ -6,8 +6,9 @@ This Repositary is intented to make the platform for Echo which will be hosted i
 
 #### Requirements
 
-1. Python 3.6
+`Python 3.6`
+
 
 #### Installation
 
-1.  pip3 install -r requirements.txt
+`  pip3 install -r requirements.txt`
