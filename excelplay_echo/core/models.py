@@ -12,6 +12,8 @@ class EchoUser(models.Model):
     def __repr__(self):
         return self.userid
 
+    class Meta:
+        ordering = ['user_id','-points']
 
 class EchoUserSubmission(models.Model):
     user_id = models.ForeignKey(EchoUser, on_delete=models.CASCADE)
