@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase,Client
 from core.models import EchoUser,EchoUserSubmission
 
 class ModelTests(TestCase):
@@ -16,3 +16,12 @@ class ModelTests(TestCase):
 		self.assertEqual(user_b.points,10)
 		self.assertTrue(isinstance(user_b,EchoUser))
 		self.assertEqual(user_a.__repr__(),user_a.user_id)
+
+class leaderboardTests(TestCase):
+	def setup(self):
+		self.url = '/leaderboard/'
+
+	def test_loading_creation(self):
+		client = Client()
+		response = client.get('/leaderboard/')
+		self.assertEqual(response.status_code, 200)
