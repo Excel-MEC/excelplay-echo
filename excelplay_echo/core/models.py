@@ -19,4 +19,8 @@ class EchoUserSubmission(models.Model):
     user_id = models.ForeignKey(EchoUser, on_delete=models.CASCADE)
     files = models.FileField(null=True)
     submission_time = models.DateTimeField(auto_now_add=True, blank=True)
-    submission_text = models.CharField(null=True, max_length=100)
+    submission_text = models.TextField(null=True, max_length=10000)
+
+class Problems(models.Model):
+    pid = models.IntegerField(primary_key=True)
+    problem_statement = models.TextField()
