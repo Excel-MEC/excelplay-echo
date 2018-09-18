@@ -68,13 +68,13 @@ def run(pid,filename):
 	ext = os.path.splitext(filename)[1]
 	obj = Judge(cwd)
 	ccf = obj.compile(pid,fid,cwd)
-	# if ccf != "CS":
-	# 	return ccf
-	# ex = obj.execute(pid,fid)
-	# if ex != "ES":
-	# 	return ex
-	# response = obj.validate(pid)
-	# return(response)
+        if ccf != "CS":
+		return ccf
+	ex = obj.execute(pid,fid)
+        if ex != "ES":
+         	return ex
+        response = obj.validate(pid)
+	return(response)
 
 if __name__ == "__main__":
 	run(1,'rshell.sh')
