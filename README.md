@@ -12,3 +12,6 @@ This Repositary is intented to make the platform for Echo which will be hosted i
 #### Installation
 
 `  pip3 install -r requirements.txt`
+OR
+```
+   pipenv install```
