@@ -23,7 +23,7 @@ class Judge:
 		"""
 		with open(self.cwd+"/tmp/err.txt",'w') as err:
 			# cmd = self.cwd.replace("[filename]",fid)
-			t = subprocess.run(["chmod 700 (fid).sh"],shell=True)
+			t = subprocess.run(["chmod 700 (fid).sh"],shell=False)
 			logging.error(t)
 			t.communicate()
 			response = t.returncode
@@ -69,10 +69,10 @@ def run(pid,filename):
 	obj = Judge(cwd)
 	ccf = obj.compile(pid,fid,cwd)
         if ccf != "CS":
-		return ccf
+            return ccf
 	ex = obj.execute(pid,fid)
         if ex != "ES":
-         	return ex
+            return ex
         response = obj.validate(pid)
 	return(response)
 
