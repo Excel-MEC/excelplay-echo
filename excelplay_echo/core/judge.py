@@ -1,8 +1,6 @@
 import os,subprocess,filecmp
 
 # logger added
-import logging
-logging.basicConfig(filename='example.log',level=logging.DEBUG)
 
 
 class Judge:
@@ -24,7 +22,6 @@ class Judge:
 		with open(self.cwd+"/tmp/err.txt",'w') as err:
 			# cmd = self.cwd.replace("[filename]",fid)
 			t = subprocess.run(["chmod 700 (fid).sh"],shell=False)
-			logging.error(t)
 			t.communicate()
 			response = t.returncode
 			t.kill()
@@ -61,10 +58,8 @@ class Judge:
 
 def run(pid,filename):
 	cwd = os.getcwd()
-	logging.info(cwd)
 
 	fid = os.path.splitext(filename)[0]
-	logging.info(fid)
 	ext = os.path.splitext(filename)[1]
 	obj = Judge(cwd)
 	ccf = obj.compile(pid,fid,cwd)
