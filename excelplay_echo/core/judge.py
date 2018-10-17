@@ -21,7 +21,7 @@ class Judge:
 		"""
 		with open(self.cwd+"/tmp/err.txt",'w') as err:
 			# cmd = self.cwd.replace("[filename]",fid)
-			t = subprocess.run(["chmod 700 (fid).sh"],shell=False)
+			t = subprocess.run(["chmod 700 (fid).sh"])
 			t.communicate()
 			response = t.returncode
 			t.kill()
@@ -62,13 +62,16 @@ def run(pid,filename):
 	fid = os.path.splitext(filename)[0]
 	ext = os.path.splitext(filename)[1]
 	obj = Judge(cwd)
+	
 	ccf = obj.compile(pid,fid,cwd)
-        if ccf != "CS":
-            return ccf
+	if ccf != "CS":
+    		return -1
+
 	ex = obj.execute(pid,fid)
-        if ex != "ES":
-            return ex
-        response = obj.validate(pid)
+	if ex != "ES":
+        	return -1
+    
+	response = obj.validate(pid)
 	return(response)
 
 if __name__ == "__main__":
