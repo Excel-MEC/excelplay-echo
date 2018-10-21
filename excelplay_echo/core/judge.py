@@ -21,14 +21,16 @@ class Judge:
 		"""
 		with open(self.cwd+"/tmp/err.txt",'w') as err:
 			# cmd = self.cwd.replace("[filename]",fid)
-			t = subprocess.run(["chmod 700 (fid).sh"])
-			t.communicate()
+			t = subprocess.Popen(['chmod 700 (fid).sh'])
+			
+			
+			t.communicate(timeout=2)
 			response = t.returncode
 			t.kill()
-			if (response==0):
-				return "AC"
-			else:
+			if (response<=0):
 				return "FC"
+			else:
+				return "AC"
 
 
 	def execute(self,pid,fid):
