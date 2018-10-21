@@ -1,5 +1,8 @@
 import os,subprocess,filecmp
 
+# logger added
+
+
 class Judge:
 
 	def __init__(self,cwd):
@@ -8,7 +11,7 @@ class Judge:
 		os.chdir(self.cwd)
 		self.timelimit = 1
 
-	def compile(self,fid):
+	def compile(self,pid,fid,cwd):
 		"""
 		bash ./filename.sh
 		if possible change file permissions
@@ -17,8 +20,8 @@ class Judge:
 		FC = failed compilation
 		"""
 		with open(self.cwd+"/tmp/err.txt",'w') as err:
-			cmd = cmd.replace("[filename]",fid)
-			t = subprocess.run(["chmod 700 (cmd).sh"],shell=True)
+			# cmd = self.cwd.replace("[filename]",fid)
+			t = subprocess.run(["chmod 700 (fid).sh"])
 			t.communicate()
 			response = t.returncode
 			t.kill()
@@ -28,12 +31,12 @@ class Judge:
 				return "FC"
 
 
-	def execute(self,fid):
+	def execute(self,pid,fid):
 		"""
 		Functionaliy : execute shell script and
 		delivery and execute script
 		"""
-		
+
 		with open(self	.cwd + "/env/testcases/"+str(pid)+".txt","r") as input:
 			with open(self.cwd+"/tmp/temp.txt",'w') as output :
 				process=subprocess.Popen(['./(fid).sh'],preexec_fn=os.setsid,cwd=os.getcwd(),stdin=input,stdout=output)
@@ -46,7 +49,7 @@ class Judge:
 
 
 
-	def validate(self,fid):
+	def validate(self,pid):
 		#"test input and out"
 		if filecmp.cmp(self.cwd+"/tmp/output.txt",self.cwd+"/env/key/key"+str(pid)+".txt"==True):
 			return "AC"
@@ -55,17 +58,21 @@ class Judge:
 
 def run(pid,filename):
 	cwd = os.getcwd()
+
 	fid = os.path.splitext(filename)[0]
 	ext = os.path.splitext(filename)[1]
 	obj = Judge(cwd)
-	ccf = obj.compile(pid,fid)
+	
+	ccf = obj.compile(pid,fid,cwd)
 	if ccf != "CS":
-		return ccf
+    		return -1
+
 	ex = obj.execute(pid,fid)
 	if ex != "ES":
-		return ex
+        	return -1
+    
 	response = obj.validate(pid)
 	return(response)
 
 if __name__ == "__main__":
-	run()
+	run(1,'rshell.sh')
