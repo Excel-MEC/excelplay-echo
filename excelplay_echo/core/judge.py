@@ -43,7 +43,9 @@ class Judge:
 
 		with open(self	.cwd + "/env/testcases/"+str(pid)+".txt","r") as input:
 			with open(self.cwd+"/tmp/temp.txt",'w') as output :
-				process=subprocess.Popen(['./'+(fid)],preexec_fn=os.setsid,cwd=os.getcwd(),stdin=input,stdout=output)
+				command = 'chmod 700 {}'.format(fid)
+				run_command = shlex.split(command)
+				process=subprocess.Popen(run_command,preexec_fn=os.setsid,cwd=os.getcwd(),stdin=input,stdout=output)
 				try:
 					process.communicate(timeout=self.timelimit)
 				except subprocess.TimeoutExpired:
