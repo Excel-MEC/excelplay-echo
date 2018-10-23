@@ -58,16 +58,14 @@ class Judge:
 		else:
 			return "WA"
 
-def run(pid,filename):
+def run(pid,fid):
 	cwd = os.getcwd()
 
-	fid = os.path.splitext(filename)[0]
-	ext = os.path.splitext(filename)[1]
 	obj = Judge(cwd)
 	
-	ccf = obj.compile(pid,fid,cwd)
-	if ccf != "CS":
-    		return -1
+        ccf = obj.compile(pid,fid,cwd)
+        if ccf != "CS":
+                return -1
 
 	ex = obj.execute(pid,fid)
 	if ex != "ES":
