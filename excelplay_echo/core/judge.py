@@ -1,10 +1,10 @@
-import os,subprocess,filecmp
+import os,subprocess,filecmp,shlex
 
 # logger added
 
 
 class Judge:
-
+ 
 	def __init__(self,cwd):
 		self.cwd=cwd
 		# change directory
@@ -21,7 +21,9 @@ class Judge:
 		"""
 		with open(self.cwd+"/tmp/err.txt",'w') as err:
 			# cmd = self.cwd.replace("[filename]",fid)
-			t = subprocess.Popen(['chmod 700 (fid).sh'])
+			command = 'chmod 700 {}'.format(fid)
+			run_command = shlex.split(command)
+			t = subprocess.Popen(run_command)
 			
 			
 			t.communicate(timeout=2)
@@ -41,7 +43,7 @@ class Judge:
 
 		with open(self	.cwd + "/env/testcases/"+str(pid)+".txt","r") as input:
 			with open(self.cwd+"/tmp/temp.txt",'w') as output :
-				process=subprocess.Popen(['./(fid).sh'],preexec_fn=os.setsid,cwd=os.getcwd(),stdin=input,stdout=output)
+				process=subprocess.Popen(['./'+(fid)],preexec_fn=os.setsid,cwd=os.getcwd(),stdin=input,stdout=output)
 				try:
 					process.communicate(timeout=self.timelimit)
 				except subprocess.TimeoutExpired:
