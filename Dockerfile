@@ -1,7 +1,13 @@
-FROM python:3.6
+FROM python:3.7 
+ 
  ENV PYTHONUNBUFFERED 1
+
  RUN mkdir -p /excelplay/excelplay-echo
  WORKDIR /excelplay/excelplay-echo
- ADD requirements.txt /excelplay/excelplay-echo/
- RUN pip install -r requirements.txt
+
+ RUN pip install --upgrade pip
+ COPY ./Pipfile /excelplay/excelplay-echo/
+ RUN pip install pipenv
+ RUN pipenv install --deploy --system --skip-lock --dev
  ADD . /excelplay/excelplay-echo
+
