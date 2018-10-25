@@ -15,5 +15,6 @@ class Echoleaderboard(APIView):
         return Response(serializer.data)
 
 class Submissionform(generics.CreateAPIView):
+    user = request.session['user']
     queryset = EchoUserSubmission.objects.all()
     serializer_class = EchoUserSubmissionSerializer
