@@ -1,4 +1,3 @@
-import request
 from django.shortcuts import render
 from core.models import EchoUser,EchoUserSubmission
 from core.serializers import EchoUserSerializer,EchoUserSubmissionSerializer
@@ -16,8 +15,13 @@ class Echoleaderboard(APIView):
         return Response(serializer.data)
 
 class Submissionform(generics.CreateAPIView):
-    user = request.session['user']
-
-    euser = EchoUser.objects.get_or_create(user_id=user)
+    # user = request.session['user']
+    # euser = EchoUser.objects.get_or_create(user_id=user)
     queryset = EchoUserSubmission.objects.all()
     serializer_class = EchoUserSubmissionSerializer
+
+    def handshake(self,request):
+        queryset = self.get_queryset()
+        user = request.session['user']
+        euser = EchoUser.objects.get_or_create(user_id=user)
+        

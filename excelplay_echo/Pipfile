@@ -8,6 +8,7 @@ django = "==2.0.8"
 pytz = "==2018.3"
 djangorestframework = "==3.8.2"
 redisleaderboard = {editable = true, git = "https://github.com/traintraveler/redis-leaderboard.git"}
+redis-leaderboard = {editable = true, git = "https://github.com/traintraveler/redis-leaderboard.git"}
 
 [dev-packages]
 

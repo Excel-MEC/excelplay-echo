@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "147ee938e6121db96310e33d24bb179b41b521e3919e26b867e2b40f0b3977ff"
+            "sha256": "5bb23537e04edbda9912ab5a28f80a75adbe1d548f3754098b9432f20a693096"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -46,6 +46,11 @@
                 "sha256:a22ca993cea2962dbb588f9f30d0015ac4afcc45bee27d3978c0dbe9e97c6c0f"
             ],
             "version": "==2.10.6"
+        },
+        "redis-leaderboard": {
+            "editable": true,
+            "git": "https://github.com/traintraveler/redis-leaderboard.git",
+            "ref": "5dc215cfe88281401a0f646655b799d02b594e6a"
         },
         "redisleaderboard": {
             "editable": true,
