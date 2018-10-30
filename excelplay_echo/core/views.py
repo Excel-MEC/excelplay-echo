@@ -47,9 +47,7 @@ def Submissionform(request):
             resp = {'Error': 'Internal Server Error'}
             return JsonResponse(resp, status=500)
 
-        print(run(pid,fid))
-
-    return HttpResponse("Lofdaslkjalskdfjklasdjf asdfjklasdfjklfsdjalkj")
+        
 
         
 
