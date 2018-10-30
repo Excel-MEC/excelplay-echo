@@ -51,11 +51,15 @@ class Judge:
 
 
     def validate(self,pid):
-        #"test input and out"
-        if filecmp.cmp(self.cwd+"/tmp/temp.txt",self.cwd+"/env/key/key"+str(pid)+".txt"==True):
+        """
+        test input and out
+        AC: ACCEPT PROGRAM
+        NA: Not accepted
+        """
+        if filecmp.cmp(self.cwd+"/tmp/temp.txt",self.cwd+"/env/testcases/"+str(pid)+".txt"==True):
             return "AC"
         else:
-            return "VA"
+            return "NA"
 
 def run(pid,fid):
     cwd = os.getcwd()
@@ -74,4 +78,4 @@ def run(pid,fid):
     return(response)
 
 if __name__ == "__main__":
-   print( run(1,'rshell.sh'))
+   print( run(1,'add.sh'))
