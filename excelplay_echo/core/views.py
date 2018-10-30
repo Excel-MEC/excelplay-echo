@@ -25,4 +25,4 @@ class Submissionform(generics.CreateAPIView):
         user = request.session['user']
         euser = EchoUser.objects.get_or_create(user_id=user)
         print(queryset)
-        
+        return Response(queryset.data)
