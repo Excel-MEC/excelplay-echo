@@ -1,6 +1,5 @@
 import os,subprocess,filecmp,shlex
 
-# logger added
 
 
 class Judge:
@@ -13,9 +12,6 @@ class Judge:
 
 	def compile(self,pid,fid,cwd):
 		"""
-		bash ./filename.sh
-		if possible change file permissions
-		add #!/bin/bash at beginning
 		AC = accept compilation
 		FC = failed compilation
 		"""
