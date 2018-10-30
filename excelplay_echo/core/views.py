@@ -12,20 +12,23 @@ from core.decorators import is_logged_in
 from redis_leaderboard.wrapper import RedisLeaderboard
 from .judge import run
 
-rdb = RedisLeaderboard('redis',6380.0)
+rdb = RedisLeaderboard('redis',6379,0)
 
-class Echoleaderboard(APIView):
-    def get(self,request,format=None):
-        leaderboard = EchoUser.objects.all()
-        serializer = EchoUserSerializer(leaderboard,many=True)
-        return Response(serializer.data)
+# class Echoleaderboard(APIView):
+#     def get(self,request,format=None):
+#         leaderboard = EchoUser.objects.all()
+#         serializer = EchoUserSerializer(leaderboard,many=True)
+#         return Response(serializer.data)
 
 @is_logged_in
 def Submissionform(request):
     if request.method=="POST":
         try:
             loginuser = request.session['user']
-            euser = EchoUser.objects.get_or_create(user_id=loginuser)
+            euser,created = EchoUser.objects.get_or_create(user_id=loginuser)
+
+            if created:
+                rdb.add('echo',loginuser,1)
             pid = euser.objects.get(pid=euser.pid)
             eid = EchoUserSubmission.objects.get_or_create(user_id=euser.user_id)
             # fid = EchoUserSubmission.get(fid=eid.fid)
@@ -38,6 +41,8 @@ def Submissionform(request):
                 file_id = val_out['val_out']
                 
                 if(run(problem_id,file_id) == "AC"):
+                    pid +=1
+                    rdb.add('echo',loginuser,pid)
                     return JsonResponse({'answer':'Correct'})
                 else:
                     return JsonResponse({'answer':'Wrong'})
