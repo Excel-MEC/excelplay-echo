@@ -77,5 +77,3 @@ def run(pid,fid):
     response = obj.validate(pid)
     return(response)
 
-if __name__ == "__main__":
-   print( run(1,'add.sh'))

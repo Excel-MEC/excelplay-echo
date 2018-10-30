@@ -1,14 +1,18 @@
+from django.http import JsonResponse
 from django.shortcuts import render
-from core.models import EchoUser,EchoUserSubmission
-from core.serializers import EchoUserSerializer,EchoUserSubmissionSerializer
+
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
-from redis_leaderboard.wrapper import RedisLeaderboard
 
+from core.models import EchoUser,EchoUserSubmission
+from core.serializers import EchoUserSerializer,EchoUserSubmissionSerializer
+from core.decorators import is_logged_in
+
+from redis_leaderboard.wrapper import RedisLeaderboard
 from .judge import run
 
-rdb = RedisLeaderboard('redis',6380,0)
+rdb = RedisLeaderboard('redis',6380.0)
 
 class Echoleaderboard(APIView):
     def get(self,request,format=None):
@@ -16,29 +20,48 @@ class Echoleaderboard(APIView):
         serializer = EchoUserSerializer(leaderboard,many=True)
         return Response(serializer.data)
 
-# def answer(request):
-#     print(request.POST,request.FILES)
-#     return ("Hello")
-    # answer = request.POST['answer']
-    # try:
-    #     user = request.session['user']
-    #     euser = EchoUser.objects.get_or_create(user_id=user)
-    #     print(EchoUserSerializer)
-    #     return(EchoUserSerializer)
-    # else:
-    #     print("HEllo")
+@is_logged_in
+def Submissionform(request):
+    if request.method=="POST":
+        try:
+            loginuser = request.session['user']
+            euser = EchoUser.objects.get_or_create(user_id=loginuser)
+            pid = euser.objects.get(pid=euser.pid)
+            eid = EchoUserSubmission.objects.get_or_create(user_id=euser.user_id)
+            # fid = EchoUserSubmission.get(fid=eid.fid)
+
+            a = EchoUserSubmissionSerializer()
+            if    a.is_valid():
+                print(a.data)
+                val_out =    a.validated_data
+                problem_id = val_out['pid']
+                file_id = val_out['val_out']
+                
+                if(run(problem_id,file_id) == "AC"):
+                    return JsonResponse({'answer':'Correct'})
+                else:
+                    return JsonResponse({'answer':'Wrong'})
 
 
-class Submissionform(generics.CreateAPIView):
-    # user = request.session['user']
-    # euser = EchoUser.objects.get_or_create(user_id=user)
-    queryset = EchoUserSubmission.objects.all()
-    serializer_class = EchoUserSubmissionSerializer
+        except Exception as e:
+            resp = {'Error': 'Internal Server Error'}
+            return JsonResponse(resp, status=500)
 
-    def handshake(self,request):
+        print(run(pid,fid))
+
+    return HttpResponse("Lofdaslkjalskdfjklasdjf asdfjklasdfjklfsdjalkj")
+
         
-        user = request.session['user']
-        euser = EchoUser.objects.get_or_create(user_id=user)
-        if(run(queryset['pid'],queryset['files'])=="WC"):
-            pid += 1
-        return Response(queryset.data)
+
+# class Submissionform(generics.CreateAPIView):
+#     queryset = EchoUserSubmission.objects.all()
+#     serializer_class = EchoUserSubmissionSerializer
+
+#     def post(self,request):
+        
+#         # user = request.session['user']
+#         # euser = EchoUser.objects.get_or_create(user_id=user)
+#         # print(euser)
+#         # if(run(queryset['pid'],queryset['files'])=="WC"):
+#         #     pid += 1
+#         return Response(EchoUserSubmissionSerializer.data)
