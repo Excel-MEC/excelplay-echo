@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 from rest_framework import generics
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 from core.models import EchoUser,EchoUserSubmission,Problems
 from core.serializers import EchoUserSerializer,EchoUserSubmissionSerializer,ProbsSerializer
@@ -23,8 +24,7 @@ rdb = RedisLeaderboard('redis',6379,0)
 def Submissionform(request):
     if request.method=="POST":
         try:
-            loginuser = request.session['user']
-           
+            loginuser = request.session['user']            
             pid = euser.objects.get(pid=euser.pid)
             eid = EchoUserSubmission.objects.get_or_create(user_id=euser.user_id)
             # fid = EchoUserSubmission.get(fid=eid.fid)
@@ -48,16 +48,16 @@ def Submissionform(request):
             resp = {'Error': 'Internal Server Error'}
             return JsonResponse(resp, status=500)
 
+@api_view(['GET'])
 def Problem(request):
-    if request.method == "GET":
-        loginuser = request.session['user']
-        euser,created = EchoUser.objects.get_or_create(user_id=loginuser)
+    loginuser = request.session['user']
+    euser,created = EchoUser.objects.get_or_create(user_id=loginuser)
 
-        if created:
-            rdb.add('echo',loginuser,1)
-        level = Problems.objects.filter(pid=euser.pid)[0]
-        serializer = ProbsSerializer(level)
-        return Response(serializer.data)
+    if created:
+        rdb.add('echo',loginuser,1)
+    level = Problems.objects.filter(pid=euser.pid)[0]
+    serializer = ProbsSerializer(level)
+    return Response(serializer.data)
       
         
 
