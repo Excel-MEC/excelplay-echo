@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 
-from core.models import EchoUser,EchoUserSubmission
+from core.models import EchoUser,EchoUserSubmission,Problems
 from core.serializers import EchoUserSerializer,EchoUserSubmissionSerializer
 from core.decorators import is_logged_in
 
@@ -25,10 +25,7 @@ def Submissionform(request):
     if request.method=="POST":
         try:
             loginuser = request.session['user']
-            euser,created = EchoUser.objects.get_or_create(user_id=loginuser)
-
-            if created:
-                rdb.add('echo',loginuser,1)
+           
             pid = euser.objects.get(pid=euser.pid)
             eid = EchoUserSubmission.objects.get_or_create(user_id=euser.user_id)
             # fid = EchoUserSubmission.get(fid=eid.fid)
@@ -52,8 +49,16 @@ def Submissionform(request):
             resp = {'Error': 'Internal Server Error'}
             return JsonResponse(resp, status=500)
 
-        
+def Problem(request):
+    if request.method == "GET":
+        loginuser = request.session['user']
+        euser,created = EchoUser.objects.get_or_create(user_id=loginuser)
 
+        if created:
+            rdb.add('echo',loginuser,1)
+        query = list(Problems.objects.order_by('pid').values())
+        print(query)
+        return JsonResponse({query})
         
 
 # class Submissionform(generics.CreateAPIView):
