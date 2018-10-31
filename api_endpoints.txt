@@ -4,5 +4,8 @@ submit/
 POST
 returns { answer: Wrong or Correct }
 
-
+probs/
+GET
+returns {pid,
+		 problemstatement}
 
