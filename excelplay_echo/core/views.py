@@ -14,11 +14,24 @@ from .judge import run
 
 rdb = RedisLeaderboard('redis',6379,0)
 
-# class Echoleaderboard(APIView):
-#     def get(self,request,format=None):
-#         leaderboard = EchoUser.objects.all()
-#         serializer = EchoUserSerializer(leaderboard,many=True)
-#         return Response(serializer.data)
+
+
+@is_logged_in
+def handshake(request):
+    try:
+        loginuser = request.session['user']
+        
+        if (not EchoUser.objects.filter(user_id=user_id).exists()):
+            EchoUser.objects.create(
+                user_id=loginuser
+            )
+        rdb.add('echo',loginuser,1)
+    except:
+        pass
+    return JsonResponse({'success':True})
+
+
+
 
 @is_logged_in
 def Submissionform(request):
@@ -27,7 +40,7 @@ def Submissionform(request):
             loginuser = request.session['user']            
             pid = euser.objects.get(pid=euser.pid)
             eid = EchoUserSubmission.objects.get_or_create(user_id=euser.user_id)
-            # fid = EchoUserSubmission.get(fid=eid.fid)
+            # fid = EchoUserSubmission.get(fid=eid.fid)k
 
             a = EchoUserSubmissionSerializer()
             if    a.is_valid():
