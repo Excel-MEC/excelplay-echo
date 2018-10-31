@@ -1,12 +1,11 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 
 from core.models import EchoUser,EchoUserSubmission,Problems
-from core.serializers import EchoUserSerializer,EchoUserSubmissionSerializer
+from core.serializers import EchoUserSerializer,EchoUserSubmissionSerializer,ProbsSerializer
 from core.decorators import is_logged_in
 
 from redis_leaderboard.wrapper import RedisLeaderboard
@@ -56,9 +55,10 @@ def Problem(request):
 
         if created:
             rdb.add('echo',loginuser,1)
-        query = list(Problems.objects.order_by('pid').values())
-        print(query)
-        return JsonResponse({query})
+        level = Problems.objects.filter(pid=euser.pid)[0]
+        serializer = ProbsSerializer(level)
+        return Response(serializer.data)
+      
         
 
 # class Submissionform(generics.CreateAPIView):
