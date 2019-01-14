@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "==2.1.2"
+django = "==2.1.5"
 pytz = "==2018.3"
 djangorestframework = "==3.8.2"
 redisleaderboard = {editable = true, git = "https://github.com/traintraveler/redis-leaderboard.git"}
